@@ -1,0 +1,86 @@
+header {
+    background-color: #7b7b7a;
+    padding: 20px;
+}
+
+header nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    justify-content: end;
+    padding: 1rem;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: WHITE;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+header nav ul li a:hover {
+    color: rgb(81, 81, 81);
+}
+
+main {
+    background-color: white;
+}
+
+main .banner {
+    /* device viewport heigth */
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #565654;
+}
+
+main .productList {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    align-items: stretch;
+}
+
+.productList .product {
+    background-color:#ffffff;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid;
+    border-radius: 20px;
+}
+.product img {
+    width: 100%;
+    flex-direction: column;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.product button {
+    padding: 5px 10px;
+    display: inline-block;
+    width: 100%;
+    margin-top: auto;
+    border: none;
+    border-radius: 10px;
+    background-color: #1d1d1b;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.product button:hover {
+    transform: scale(0.9);
+}
+
+footer {
+    background-color: #30302e;
+    padding: 20px;
+    text-align: center;
+    font-weight: 700;
+    color: white;
+}
