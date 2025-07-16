@@ -23,7 +23,7 @@ const Main = () => {
     <main>
       <section className="banner">
         <h1>Bienvenidos a la feria de Fabri</h1>
-        <h2>Los mejores precios de la ciudad</h2>
+        <h2>Los mejores productos y precios de la ciudad</h2>
       </section>
       <section className="productList">
         {
