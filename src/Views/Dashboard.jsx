@@ -8,6 +8,7 @@ const Dashboard = () => {
   const [description, setDescription] = useState("")
   const [error, setError] = useState(null)
   const [isDisabled, setIsDisabled] = useState(true)
+  const [productos, setProductos] = useState (JSON.parse(localStorage.getItem("productos"))||[])
 
   const handleName = (event) => {
     setName(event.target.value)
@@ -43,6 +44,9 @@ const Dashboard = () => {
     const newProduct = { name, price, description }
     // Guardar en la base de datos el nuevo producto
     console.log("Nuevo producto: ", newProduct)
+    setProductos([...productos, newProduct])
+    localStorage.setItem("productos",JSON.stringify([...productos, newProduct]))
+    
 
     setName("")
     setPrice(0)

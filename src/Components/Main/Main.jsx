@@ -4,15 +4,20 @@ import "./Main.css"
 const Main = () => {
   const [productos, setProductos] = useState([])
   const [error, setError] = useState(null)
+  //simulacion de usuari conectado
+  const [user, setUser] = useState(false)
 
   const fetchingProducts = async () => { //TRAER PRODUCTOS, ES UNA FUNCION ASYNC OSEA QUE NO TENGO APURO EN TRAER LOS PRODUCTOS, QUIERE DECIR QUE ME TRAIGA LSO PRODUCTOS CUANDO ESTEN
-    try {
-      const respuesta = await fetch("https://fakestoreapi.com/products")
-      const data = await respuesta.json()
-      setProductos(data)
-    } catch (error) {
-      setError("No pude recuperar los productos :(")
-    }
+    /* try {
+       const respuesta = await fetch("https://fakestoreapi.com/products")
+       const data = await respuesta.json()
+       setProductos(data)
+     } catch (error) {
+       setError("No pude recuperar los productos :(")
+     } */
+
+    const productosLocalStorage = JSON.parse(localStorage.getItem("productos"))
+    setProductos(productosLocalStorage)
   }
 
   useEffect(() => {
@@ -37,10 +42,16 @@ const Main = () => {
           productos.map((producto) => {
             return (
               <div className="product">
-                <img src={producto.image} alt={"imagen del producto" + producto.title} />
-                <h2>{producto.title}</h2>
+                <h2>{producto.name}</h2>
                 <p>${producto.price}</p>
                 <p>{producto.description}</p>
+                {
+                  user && <div className="actualizar-button">
+                    <button>Actualizar</button>
+                    <button>Borrar</button>
+                  </div>
+
+                }
                 <button>Comprar</button>
               </div>
             )
