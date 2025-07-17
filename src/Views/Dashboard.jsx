@@ -1,6 +1,8 @@
 import { use, useEffect, useState } from "react"
 import Layout from "../components/Layout/Layout"
 import "../styles/Dashboard.css"
+import { db } from "../config/firebase"
+import { collection, addDoc, doc } from "firebase/firestore"
 
 const Dashboard = () => {
   const [name, setName] = useState("")
@@ -10,6 +12,17 @@ const Dashboard = () => {
   const [isDisabled, setIsDisabled] = useState(true)
   const [productos, setProductos] = useState(JSON.parse(localStorage.getItem("productos")) || [])
 
+  const productosRef = collection(db, "productos")
+
+  const createProduct = async (productData) => {
+    try {
+      const productRef = await addDoc(productosRef, productData)
+      return productRef
+    } catch (error) {
+      console.log("Error al cargar el producto")
+    }
+  }
+
   const handleName = (event) => {
     setName(event.target.value)
   }
@@ -18,7 +31,7 @@ const Dashboard = () => {
     setPrice(Number(event.target.value))
   }
 
-  const handleDescription = (event) => {
+  const handleDescription = async (event) => {
     setDescription(event.target.value)
   }
 
@@ -43,15 +56,14 @@ const Dashboard = () => {
 
     const newProduct = { name, price, description }
     // Guardar en la base de datos el nuevo producto
-    console.log("Nuevo producto: ", newProduct)
-    setProductos([...productos, newProduct])
-    localStorage.setItem("productos", JSON.stringify([...productos, newProduct]))
-
+    createProduct(newProduct)
 
     setName("")
     setPrice(0)
     setDescription("")
   }
+
+  console.log(productos)
 
   useEffect(() => {
     if (name && price && description) {
@@ -62,6 +74,7 @@ const Dashboard = () => {
   }, [name, price, description])
 
   return (
+  
     <Layout>
       <section id="admin-section">
         <h1>Panel de administración</h1>

@@ -1,23 +1,30 @@
 import { useEffect, useState } from "react"
 import "./Main.css"
+import { db } from "../../config/firebase"
+import { collection, getDocs } from "firebase/firestore"
 
 const Main = () => {
   const [productos, setProductos] = useState([])
   const [error, setError] = useState(null)
-  //simulacion de usuari conectado
+  // simulación de usuario conectado
   const [user, setUser] = useState(false)
 
-  const fetchingProducts = async () => { //TRAER PRODUCTOS, ES UNA FUNCION ASYNC OSEA QUE NO TENGO APURO EN TRAER LOS PRODUCTOS, QUIERE DECIR QUE ME TRAIGA LSO PRODUCTOS CUANDO ESTEN
-    /* try {
-       const respuesta = await fetch("https://fakestoreapi.com/products")
-       const data = await respuesta.json()
-       setProductos(data)
-     } catch (error) {
-       setError("No pude recuperar los productos :(")
-     } */
+  const fetchingProducts = async () => {
+    // try {
+    //   // caso de éxito
+    //   const respuesta = await fetch("https://fakestoreapi.com/products")
+    //   const data = await respuesta.json()
+    //   setProductos(data)
+    // } catch (error) {
+    //   // capturando todos los erres o los casos de no éxito que tengamos
+    //   setError("No pude recuperar los productos :(")
+    // }
 
-    const productosLocalStorage = JSON.parse(localStorage.getItem("productos"))
-    setProductos(productosLocalStorage)
+    const productosRef = collection(db, "productos")
+
+    const snapshot = await getDocs(productosRef)
+    const docs = snapshot.docs.map((doc) => doc.data())
+    setProductos(docs)
   }
 
   useEffect(() => {
