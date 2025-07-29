@@ -61,22 +61,7 @@ main .productList {
     margin-bottom: 15px;
 }
 
-.product button {
-    padding: 5px 10px;
-    display: inline-block;
-    width: 100%;
-    margin-top: auto;
-    border: none;
-    border-radius: 10px;
-    background-color: #1d1d1b;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    transition: transform 0.3s;
-}
 
-.product button:hover {
-    transform: scale(0.9);
-}
 
 footer {
     background-color: #30302e;

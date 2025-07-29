@@ -1,11 +1,14 @@
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer"
+import "./Layout.css"
 
 const Layout = (props) => {
   return (
     <>
       <Header />
-      {props.children}
+      <div className="content-layout">
+        {props.children}
+      </div>
       <Footer />
     </>
   )

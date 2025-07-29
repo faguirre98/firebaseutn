@@ -3,6 +3,7 @@ import Layout from "../components/Layout/Layout"
 import "../styles/Dashboard.css"
 import { db } from "../config/firebase"
 import { collection, addDoc, doc } from "firebase/firestore"
+import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
   const [name, setName] = useState("")
@@ -10,7 +11,9 @@ const Dashboard = () => {
   const [description, setDescription] = useState("")
   const [error, setError] = useState(null)
   const [isDisabled, setIsDisabled] = useState(true)
-  const [productos, setProductos] = useState(JSON.parse(localStorage.getItem("productos")) || [])
+  const [message, setMessage] = useState("")
+
+  const navigate = useNavigate()
 
   const productosRef = collection(db, "productos")
 
@@ -35,7 +38,7 @@ const Dashboard = () => {
     setDescription(event.target.value)
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     setError("")
 
@@ -56,14 +59,24 @@ const Dashboard = () => {
 
     const newProduct = { name, price, description }
     // Guardar en la base de datos el nuevo producto
-    createProduct(newProduct)
+
+    try {
+      await createProduct(newProduct)
+    setMessage("Producto agregado correctamente, redirigiendo...")
 
     setName("")
     setPrice(0)
     setDescription("")
-  }
 
-  console.log(productos)
+    setTimeout(() => { 
+      setMessage("")
+      navigate("/")
+    }, 4000)
+  } catch (error) {
+    setError("Error al agregar el producto. Por favor, inténtalo de nuevo.")
+    }
+
+  }
 
   useEffect(() => {
     if (name && price && description) {
@@ -74,7 +87,7 @@ const Dashboard = () => {
   }, [name, price, description])
 
   return (
-  
+
     <Layout>
       <section id="admin-section">
         <h1>Panel de administración</h1>
@@ -91,6 +104,7 @@ const Dashboard = () => {
 
           <button disabled={isDisabled}>Agregar producto</button>
           {error && <p style={{ color: "red" }}>{error}</p>}
+          {message && <p style={{ color: "green" }}>{message}</p>}
         </form>
       </section>
     </Layout>

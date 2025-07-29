@@ -2,12 +2,15 @@ import { useEffect, useState } from "react"
 import "./Main.css"
 import { db } from "../../config/firebase"
 import { collection, getDocs } from "firebase/firestore"
+import { Link } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
+
 
 const Main = () => {
   const [productos, setProductos] = useState([])
   const [error, setError] = useState(null)
   // simulación de usuario conectado
-  const [user, setUser] = useState(false)
+  const [user, setUser] = useState(true)
 
   const fetchingProducts = async () => {
     // try {
@@ -53,13 +56,18 @@ const Main = () => {
                 <p>${producto.price}</p>
                 <p>{producto.description}</p>
                 {
-                  user && <div className="actualizar-button">
-                    <button>Actualizar</button>
-                    <button>Borrar</button>
-                  </div>
-
+                  user && <>
+                    <div>
+                      {producto.createdAt && <p>Producto creado: {new Date(producto.createdAt).toLocaleString()}</p>}
+                      {producto.createdAt !== producto.updatedAt && <p><strong>Ultima actualización:</strong> {new Date(producto.updatedAt).toLocaleString()}</p>}
+                    </div>
+                    <div className="user-buttons">
+                      <Link to={`/editar-producto/${producto.id}`} className="buttonEdit">Editar producto</Link>
+                      <button onClick={() => handleDeleteProduct(producto.id)} className="buttonDelete">Borrar</button>
+                    </div>
+                  </>
                 }
-                <button>Comprar</button>
+                <button className="buttonBuy">Comprar</button>
               </div>
             )
           })
