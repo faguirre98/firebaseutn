@@ -1,8 +1,8 @@
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Layout from "../components/Layout/Layout"
 import "../styles/Dashboard.css"
 import { db } from "../config/firebase"
-import { collection, addDoc, doc } from "firebase/firestore"
+import { collection, doc, setDoc } from "firebase/firestore"
 import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
@@ -14,15 +14,22 @@ const Dashboard = () => {
   const [message, setMessage] = useState("")
 
   const navigate = useNavigate()
-
   const productosRef = collection(db, "productos")
 
+  // ✅ Función para generar SKU aleatorio
+  const generarSku = () => {
+    return "SKU-" + Math.random().toString(36).substr(2, 6).toUpperCase()
+  }
+
+  // Usamos setDoc para guardar con nuestro propio ID
   const createProduct = async (productData) => {
     try {
-      const productRef = await addDoc(productosRef, productData)
-      return productRef
+      const productDoc = doc(productosRef, productData.id)
+      await setDoc(productDoc, productData)
+      return productDoc
     } catch (error) {
-      console.log("Error al cargar el producto")
+      console.error("Error al cargar el producto:", error)
+      throw error
     }
   }
 
@@ -34,7 +41,7 @@ const Dashboard = () => {
     setPrice(Number(event.target.value))
   }
 
-  const handleDescription = async (event) => {
+  const handleDescription = (event) => {
     setDescription(event.target.value)
   }
 
@@ -48,46 +55,44 @@ const Dashboard = () => {
     }
 
     if (name.length < 2) {
-      setError("El nombre debe tener una largo mínimo de 2 caracteres.")
+      setError("El nombre debe tener un largo mínimo de 2 caracteres.")
       return
     }
 
-    if (price < 0) {
+    if (price <= 0) {
       setError("Debes agregar un precio mayor a 0")
       return
     }
 
-    const newProduct = { name, price, description }
-    // Guardar en la base de datos el nuevo producto
+    const id = crypto.randomUUID()
+    const createdAt = Date.now()
+    const updatedAt = createdAt
+    const sku = generarSku() // ✅ Nuevo SKU aleatorio
+
+    const newProduct = { id, name, price, description, sku, createdAt, updatedAt }
 
     try {
       await createProduct(newProduct)
-    setMessage("Producto agregado correctamente, redirigiendo...")
+      setMessage("Producto agregado correctamente, redirigiendo...")
 
-    setName("")
-    setPrice(0)
-    setDescription("")
+      setName("")
+      setPrice(0)
+      setDescription("")
 
-    setTimeout(() => { 
-      setMessage("")
-      navigate("/")
-    }, 4000)
-  } catch (error) {
-    setError("Error al agregar el producto. Por favor, inténtalo de nuevo.")
+      setTimeout(() => {
+        setMessage("")
+        navigate("/")
+      }, 4000)
+    } catch (error) {
+      setError("Error al agregar el producto. Por favor, inténtalo de nuevo.")
     }
-
   }
 
   useEffect(() => {
-    if (name && price && description) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
-    }
+    setIsDisabled(!(name && price && description))
   }, [name, price, description])
 
   return (
-
     <Layout>
       <section id="admin-section">
         <h1>Panel de administración</h1>
@@ -103,6 +108,7 @@ const Dashboard = () => {
           <textarea name="description" id="description" onChange={handleDescription} value={description}></textarea>
 
           <button disabled={isDisabled}>Agregar producto</button>
+
           {error && <p style={{ color: "red" }}>{error}</p>}
           {message && <p style={{ color: "green" }}>{message}</p>}
         </form>

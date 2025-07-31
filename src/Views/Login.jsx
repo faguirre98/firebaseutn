@@ -3,8 +3,6 @@ import Layout from "../components/Layout/Layout"
 import "../styles/Login.css"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../config/firebase"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -12,6 +10,8 @@ const Login = () => {
   const [error, setError] = useState(null)
   const [message, setMessage] = useState(null)
   const navigate = useNavigate()
+
+  const  { login } = useAuth ()
 
 
   const handleSubmit = async (e) => {
@@ -26,7 +26,7 @@ const Login = () => {
 
     // intentar guardar o registrar un usuario.
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      await login(email, password)
       setMessage("Usuario loguedo con éxito...")
       setEmail("")
       setPassword("")
@@ -66,7 +66,7 @@ const Login = () => {
               }
             />
 
-            <button>Registrarme</button>
+            <button>Iniciar Sesión</button>
           </form>
           <h5 className="error-message">{error}</h5>
           <h5 className="success-message">{message}</h5>
