@@ -1,12 +1,28 @@
-# React + Vite
+🧾 README - La Feria de Fabri E-Commerce.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🌐 Descripción:
+La Fería de Fabri es una página web desarrollada que permite a los usuarios: navegar productos, registrarse, realizar comprar. Y una vez logueado y registrado te permite, editar productos, borrarlos y agregar productos desde el dashboard.
 
-Currently, two official plugins are available:
+Funcionalidades:
+- Página de inicio con listado de productos (nombre, precio, SKU, descripción)
+- Registro de usuarios (nombre, apellido, email, contraseña)
+- Login de usuarios con Firebase Authentication
+- Dashboard para editar, agregar o borrar productos.
+- Navegación entre secciones con React RouterResponsive
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Tecnologias: 
+- ⚛️ React
+- 🔥 Firebase (Auth + Firestore)
+- 📦 React Router DOM
+- 💄 CSS personalizado
+- 📁 Vite como entorno de desarrollo
 
-## Expanding the ESLint configuration
+Instalación:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1- Clonar este repositorio:
+https://github.com/faguirre98/UnidadFinal-UTN.git
+
+2- npm install (Para instalar todas las dependencias correspondientes.)
+
+3- Iniciar el servidor de desarrollo:
+  - npm run dev
